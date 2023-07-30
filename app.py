@@ -20,35 +20,39 @@ label_mapping = {
 rfmTable['class_label_num'] = rfmTable['class_label'].map(label_mapping)
 
 # Set the title of the app
-st.title("Visualizations in Streamlit")
+st.title("RFM Dashboard")
 
-# Create a 3D scatter plot with Plotly
-fig_3d = go.Figure(data=go.Scatter3d(
-    x=np.log10(rfmTable['recency']),
-    y=np.log10(rfmTable['frequency']),
-    z=np.log10(rfmTable['actual_gmv']),
-    mode='markers',
-    marker=dict(size=8, color=rfmTable['class_label_num'], colorscale='Viridis'),
-    text=rfmTable['class_label']
-))
+# Create subplots
+fig_dist, axes = plt.subplots(2, 4, figsize=(18, 12))
 
-# Set labels for the axes
-fig_3d.update_layout(scene=dict(
-    xaxis_title='recency',
-    yaxis_title='frequency',
-    zaxis_title='actual_gmv'
-))
+# Plot density plot of 'recency'
+sns.kdeplot(rfmTable['recency'], ax=axes[0, 0], vertical=False)
+sns.violinplot(y=rfmTable['recency'], ax=axes[1, 0])
+axes[0, 0].set_xlabel('Recency')
+axes[0, 0].set_ylabel('Density')
+axes[0, 0].set_title('Density Plot of Recency')
 
-# Show the 3D scatter plot using Streamlit
-st.plotly_chart(fig_3d)
+# Plot density plot of 'frequency'
+sns.kdeplot(rfmTable['frequency'], ax=axes[0, 1], vertical=False)
+sns.violinplot(y=rfmTable['frequency'], ax=axes[1, 1])
+axes[0, 1].set_xlabel('Frequency')
+axes[0, 1].set_ylabel('Density')
+axes[0, 1].set_title('Density Plot of Frequency')
 
+# Plot density plot of 'actual_gmv'
+sns.kdeplot(rfmTable['actual_gmv'], ax=axes[0, 2], vertical=False)
+sns.violinplot(y=rfmTable['actual_gmv'], ax=axes[1, 2])
+axes[0, 2].set_xlabel('Actual GMV')
+axes[0, 2].set_ylabel('Density')
+axes[0, 2].set_title('Density Plot of Actual GMV')
 
-fig_2 = plt.figure(figsize=(10, 6))
-sns.kdeplot(rfmTable['recency'])
-plt.xlabel('Recency')
-plt.ylabel('Density')
-plt.title(f'Density Plot of Recency')
+# Plot density plot of 'actual_gmv'
+sns.kdeplot(rfmTable['gmv_missing_indicator'], ax=axes[0, 3], vertical=False)
+sns.violinplot(y=rfmTable['gmv_missing_indicator'], ax=axes[1, 3])
+axes[0, 3].set_xlabel('GMV missing values')
+axes[0, 3].set_ylabel('Density')
+axes[0, 3].set_title('Density Plot of GMV missing values')
 
 
 # Show the bar plot using Streamlit
-st.pyplot(fig_2)
+st.pyplot(fig_dist)
