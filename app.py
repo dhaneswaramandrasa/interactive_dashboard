@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Sample data for demonstration
 rfmTable = pd.read_parquet('rfmTable.parquet')
@@ -41,11 +42,13 @@ fig_3d.update_layout(scene=dict(
 # Show the 3D scatter plot using Streamlit
 st.plotly_chart(fig_3d)
 
-# Create a bar plot using Matplotlib
-fig_bar = plt.figure(figsize=(10, 6))
-plt.bar(rfmTable['class_label'], rfmTable['frequency'])
-plt.xlabel('Class Label')
-plt.ylabel('Frequency')
+
+fig_2 = plt.figure(figsize=(10, 6))
+sns.kdeplot(rfmTable['recency'])
+plt.xlabel('Recency')
+plt.ylabel('Density')
+plt.title(f'Density Plot of Recency')
+
 
 # Show the bar plot using Streamlit
-st.pyplot(fig_bar)
+st.pyplot(fig_2)
