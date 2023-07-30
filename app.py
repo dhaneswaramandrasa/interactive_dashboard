@@ -5,6 +5,9 @@ import numpy as np
 import seaborn as sns
 from streamlit_extras.add_vertical_space import add_vertical_space
 
+
+st.set_page_config(page_title="RFM Dashboard", layout="wide")
+
 # Sample data for demonstration
 rfmTable = pd.read_parquet('rfmTable.parquet')
 rfmTable['class_label'] = np.where(rfmTable['class_kmeans_5'] == 3, 'High Potential', (np.where(rfmTable['class_kmeans_5'] == 0, 'Medium Potential', 'Low Potential')))
@@ -19,8 +22,6 @@ label_mapping = {
 # Convert the categorical label to numerical value
 rfmTable['class_label_num'] = rfmTable['class_label'].map(label_mapping)
 
-# Set the title of the app
-st.title("RFM Dashboard")
 
 st.write("")
 row3_space1, row3_1, row3_space2, row3_2, row3_space3 = st.columns(
