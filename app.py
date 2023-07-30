@@ -5,7 +5,18 @@ import numpy as np
 
 # Sample data for demonstration
 rfmTable = pd.read_parquet('rfmTable.parquet')
-rfmTable['class_label'] = np.where(rfmTable['class_kmeans_5'] == 3, 'High Potential', (np.where(rfmTable['class_kmeans_5'] == 0, 'Medium Potential','Low Potential')))
+rfmTable['class_label'] = np.where(rfmTable['class_kmeans_5'] == 3, 'High Potential', (np.where(rfmTable['class_kmeans_5'] == 0, 'Medium Potential', 'Low Potential')))
+
+# Create a mapping for the categorical label to numerical value
+label_mapping = {
+    'High Potential': 1,
+    'Medium Potential': 2,
+    'Low Potential': 3
+}
+
+# Convert the categorical label to numerical value
+rfmTable['class_label_num'] = rfmTable['class_label'].map(label_mapping)
+
 # Set the title of the app
 st.title("Plotly 3D Scatter Plot in Streamlit")
 
@@ -15,7 +26,7 @@ fig = go.Figure(data=go.Scatter3d(
     y=np.log10(rfmTable['frequency']),
     z=np.log10(rfmTable['actual_gmv']),
     mode='markers',
-    marker=dict(size=8, color=rfmTable['class_label'], colorscale='Viridis'),
+    marker=dict(size=8, color=rfmTable['class_label_num'], colorscale='Viridis'),
     text=rfmTable['class_label']
 ))
 
