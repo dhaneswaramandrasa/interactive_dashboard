@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 # Sample data for demonstration
-rfmTable = pd.read_csv('rfmTable.csv')
+rfmTable = pd.read_csv('rfmTable.parquet')
 rfmTable['class_label'] = np.where(rfmTable['class_kmeans_5'] == 3, 'High Potential', (np.where(rfmTable['class_kmeans_5'] == 0, 'Medium Potential','Low Potential')))
 # Set the title of the app
 st.title("Plotly 3D Scatter Plot in Streamlit")
