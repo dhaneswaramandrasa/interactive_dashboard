@@ -23,7 +23,7 @@ rfmTable['class_label_num'] = rfmTable['class_label'].map(label_mapping)
 st.title("RFM Dashboard")
 
 # Create subplots
-fig_dist, axes = plt.subplots(2, 4, figsize=(18, 12))
+fig_dist, axes = plt.subplots(2, 4, figsize=(50, 50))
 
 # Plot density plot of 'recency'
 sns.kdeplot(rfmTable['recency'], ax=axes[0, 0], vertical=False)
