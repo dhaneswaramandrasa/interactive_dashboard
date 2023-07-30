@@ -2,6 +2,7 @@ import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Sample data for demonstration
 rfmTable = pd.read_parquet('rfmTable.parquet')
@@ -18,10 +19,10 @@ label_mapping = {
 rfmTable['class_label_num'] = rfmTable['class_label'].map(label_mapping)
 
 # Set the title of the app
-st.title("Plotly 3D Scatter Plot in Streamlit")
+st.title("Visualizations in Streamlit")
 
 # Create a 3D scatter plot with Plotly
-fig = go.Figure(data=go.Scatter3d(
+fig_3d = go.Figure(data=go.Scatter3d(
     x=np.log10(rfmTable['recency']),
     y=np.log10(rfmTable['frequency']),
     z=np.log10(rfmTable['actual_gmv']),
@@ -31,11 +32,20 @@ fig = go.Figure(data=go.Scatter3d(
 ))
 
 # Set labels for the axes
-fig.update_layout(scene=dict(
+fig_3d.update_layout(scene=dict(
     xaxis_title='recency',
     yaxis_title='frequency',
     zaxis_title='actual_gmv'
 ))
 
-# Show the plot using Streamlit
-st.plotly_chart(fig)
+# Show the 3D scatter plot using Streamlit
+st.plotly_chart(fig_3d)
+
+# Create a bar plot using Matplotlib
+fig_bar = plt.figure(figsize=(10, 6))
+plt.bar(rfmTable['class_label'], rfmTable['frequency'])
+plt.xlabel('Class Label')
+plt.ylabel('Frequency')
+
+# Show the bar plot using Streamlit
+st.pyplot(fig_bar)
