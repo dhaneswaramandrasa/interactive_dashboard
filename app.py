@@ -21,13 +21,16 @@ rfmTable['class_label_num'] = rfmTable['class_label'].map(label_mapping)
 # Set the title of the app
 st.title("RFM Dashboard")
 
+# Create columns for plots
+col1, col2, col3, col4 = st.columns(4)
+
 # Plot density plot of 'recency' using Plotly
 fig_recency = go.Figure()
 fig_recency.add_trace(go.Histogram(x=rfmTable['recency'], histnorm='density', marker=dict(color='blue')))
 fig_recency.update_layout(title_text='Density Plot of Recency')
 
 # Show the Plotly figure using Streamlit
-st.plotly_chart(fig_recency)
+col1.plotly_chart(fig_recency)
 
 # Plot density plot of 'frequency' using Plotly
 fig_frequency = go.Figure()
@@ -35,7 +38,7 @@ fig_frequency.add_trace(go.Histogram(x=rfmTable['frequency'], histnorm='density'
 fig_frequency.update_layout(title_text='Density Plot of Frequency')
 
 # Show the Plotly figure using Streamlit
-st.plotly_chart(fig_frequency)
+col2.plotly_chart(fig_frequency)
 
 # Plot density plot of 'actual_gmv' using Plotly
 fig_actual_gmv = go.Figure()
@@ -43,7 +46,7 @@ fig_actual_gmv.add_trace(go.Histogram(x=rfmTable['actual_gmv'], histnorm='densit
 fig_actual_gmv.update_layout(title_text='Density Plot of Actual GMV')
 
 # Show the Plotly figure using Streamlit
-st.plotly_chart(fig_actual_gmv)
+col3.plotly_chart(fig_actual_gmv)
 
 # Plot density plot of 'gmv_missing_indicator' using Plotly
 fig_gmv_missing = go.Figure()
@@ -51,4 +54,4 @@ fig_gmv_missing.add_trace(go.Histogram(x=rfmTable['gmv_missing_indicator'], hist
 fig_gmv_missing.update_layout(title_text='Density Plot of GMV Missing Values')
 
 # Show the Plotly figure using Streamlit
-st.plotly_chart(fig_gmv_missing)
+col4.plotly_chart(fig_gmv_missing)
