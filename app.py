@@ -2,7 +2,6 @@ import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Sample data for demonstration
@@ -22,37 +21,34 @@ rfmTable['class_label_num'] = rfmTable['class_label'].map(label_mapping)
 # Set the title of the app
 st.title("RFM Dashboard")
 
-# Create subplots
-fig_dist, axes = plt.subplots(2, 4, figsize=(90, 60))
+# Plot density plot of 'recency' using Plotly
+fig_recency = go.Figure()
+fig_recency.add_trace(go.Histogram(x=rfmTable['recency'], histnorm='density', marker=dict(color='blue')))
+fig_recency.update_layout(title_text='Density Plot of Recency')
 
-# Plot density plot of 'recency'
-sns.kdeplot(rfmTable['recency'], ax=axes[0, 0], vertical=False)
-sns.violinplot(y=rfmTable['recency'], ax=axes[1, 0])
-axes[0, 0].set_xlabel('Recency')
-axes[0, 0].set_ylabel('Density')
-axes[0, 0].set_title('Density Plot of Recency')
+# Show the Plotly figure using Streamlit
+st.plotly_chart(fig_recency)
 
-# Plot density plot of 'frequency'
-sns.kdeplot(rfmTable['frequency'], ax=axes[0, 1], vertical=False)
-sns.violinplot(y=rfmTable['frequency'], ax=axes[1, 1])
-axes[0, 1].set_xlabel('Frequency')
-axes[0, 1].set_ylabel('Density')
-axes[0, 1].set_title('Density Plot of Frequency')
+# Plot density plot of 'frequency' using Plotly
+fig_frequency = go.Figure()
+fig_frequency.add_trace(go.Histogram(x=rfmTable['frequency'], histnorm='density', marker=dict(color='green')))
+fig_frequency.update_layout(title_text='Density Plot of Frequency')
 
-# Plot density plot of 'actual_gmv'
-sns.kdeplot(rfmTable['actual_gmv'], ax=axes[0, 2], vertical=False)
-sns.violinplot(y=rfmTable['actual_gmv'], ax=axes[1, 2])
-axes[0, 2].set_xlabel('Actual GMV')
-axes[0, 2].set_ylabel('Density')
-axes[0, 2].set_title('Density Plot of Actual GMV')
+# Show the Plotly figure using Streamlit
+st.plotly_chart(fig_frequency)
 
-# Plot density plot of 'actual_gmv'
-sns.kdeplot(rfmTable['gmv_missing_indicator'], ax=axes[0, 3], vertical=False)
-sns.violinplot(y=rfmTable['gmv_missing_indicator'], ax=axes[1, 3])
-axes[0, 3].set_xlabel('GMV missing values')
-axes[0, 3].set_ylabel('Density')
-axes[0, 3].set_title('Density Plot of GMV missing values')
+# Plot density plot of 'actual_gmv' using Plotly
+fig_actual_gmv = go.Figure()
+fig_actual_gmv.add_trace(go.Histogram(x=rfmTable['actual_gmv'], histnorm='density', marker=dict(color='orange')))
+fig_actual_gmv.update_layout(title_text='Density Plot of Actual GMV')
 
+# Show the Plotly figure using Streamlit
+st.plotly_chart(fig_actual_gmv)
 
-# Show the bar plot using Streamlit
-st.pyplot(fig_dist)
+# Plot density plot of 'gmv_missing_indicator' using Plotly
+fig_gmv_missing = go.Figure()
+fig_gmv_missing.add_trace(go.Histogram(x=rfmTable['gmv_missing_indicator'], histnorm='density', marker=dict(color='red')))
+fig_gmv_missing.update_layout(title_text='Density Plot of GMV Missing Values')
+
+# Show the Plotly figure using Streamlit
+st.plotly_chart(fig_gmv_missing)
