@@ -1,34 +1,36 @@
 import streamlit as st
-import seaborn as sns
+import plotly.graph_objects as go
 import pandas as pd
-import matplotlib.pyplot as plt
-from io import BytesIO
+import numpy as np
 
 # Sample data for demonstration
 data = {
-    'x': [1, 2, 3, 4, 5],
-    'y': [5, 2, 7, 4, 8]
+    'gmv_missing_indicator': np.random.rand(100),
+    'frequency': np.random.rand(100),
+    'actual_gmv': np.random.rand(100),
+    'class_kmeans_5': np.random.choice([1, 2, 3, 4, 5], size=100)
 }
-df = pd.DataFrame(data)
+rfm_targeted = pd.DataFrame(data)
 
 # Set the title of the app
-st.title("Seaborn Plot in Streamlit")
+st.title("Plotly 3D Scatter Plot in Streamlit")
 
-# Display the DataFrame
-st.subheader("Sample Data:")
-st.dataframe(df)
+# Create a 3D scatter plot with Plotly
+fig = go.Figure(data=go.Scatter3d(
+    x=np.log10(rfm_targeted['gmv_missing_indicator']),
+    y=np.log10(rfm_targeted['frequency']),
+    z=np.log10(rfm_targeted['actual_gmv']),
+    mode='markers',
+    marker=dict(size=8, color=rfm_targeted['class_kmeans_5'], colorscale='Viridis'),
+    text=rfm_targeted['class_kmeans_5']
+))
 
-# Add a Seaborn plot using Matplotlib
-st.subheader("Seaborn Plot:")
-sns_plot = sns.barplot(x='x', y='y', data=df)
-plt.tight_layout()
-plt.xlabel('x-axis')
-plt.ylabel('y-axis')
+# Set labels for the axes
+fig.update_layout(scene=dict(
+    xaxis_title='gmv_missing_indicator',
+    yaxis_title='frequency',
+    zaxis_title='actual_gmv'
+))
 
-# Save the Seaborn plot as an image
-buffer = BytesIO()
-plt.savefig(buffer, format='png')
-buffer.seek(0)
-
-# Display the image using Streamlit
-st.image(buffer)
+# Show the plot using Streamlit
+st.plotly_chart(fig)
